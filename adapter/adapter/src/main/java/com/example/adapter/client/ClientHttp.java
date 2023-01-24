@@ -1,5 +1,6 @@
 package com.example.adapter.client;
 
+import com.example.adapter.model.Acknowledge;
 import com.example.adapter.model.InfoRequest;
 import com.example.adapter.model.Penalty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class ClientHttp {
                 });
     }
 
-    public ResponseEntity<Long> sendAcknowledge(Long requestId){
-        return restTemplate.postForEntity(ACKNOWLEDGE, requestId, Long.class);
+    public ResponseEntity<Acknowledge> sendAcknowledge(Acknowledge acknowledge){
+        return restTemplate.postForEntity(ACKNOWLEDGE, acknowledge, Acknowledge.class);
     }
 }

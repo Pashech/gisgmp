@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface InformationRequestRepository extends JpaRepository<InformationRequest, Long> {
-    InformationRequest getInformationRequestByVehicleCertificate(String vehicleCertificate);
+    Optional<InformationRequest> getInformationRequestByVehicleCertificate(String vehicleCertificate);
 }
 

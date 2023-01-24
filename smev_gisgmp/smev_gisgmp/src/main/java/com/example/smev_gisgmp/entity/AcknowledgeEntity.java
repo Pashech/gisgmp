@@ -2,7 +2,6 @@ package com.example.smev_gisgmp.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,18 +9,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "information_of_penalty")
 @Getter
 @Setter
-@ToString
-public class InformationRequest {
+@Table(name = "acknowledge")
+public class AcknowledgeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "vehicle_certificate")
-    private String vehicleCertificate;
+    @Column(name = "response_id")
+    private Long responseId;
 }
