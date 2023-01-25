@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.Pattern;
 
 @Component
 @Getter
@@ -14,6 +13,5 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InfoRequest {
-    @Pattern(regexp = "[A-Z]{3}[1-9]{6}", message = "only letters")
     private String vehicleCertificate;
 }

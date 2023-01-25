@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 @Entity
 @Table(name = "information_of_penalty")
@@ -20,7 +22,7 @@ import javax.validation.constraints.Pattern;
 public class InformationRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     @Column(name = "vehicle_certificate")
     private String vehicleCertificate;

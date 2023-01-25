@@ -1,7 +1,6 @@
 package com.example.smev_gisgmp.controller;
 
 import com.example.smev_gisgmp.entity.AcknowledgeEntity;
-import com.example.smev_gisgmp.entity.Penalty;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
 import com.example.smev_gisgmp.services.AcknowledgeService;
 import com.example.smev_gisgmp.services.PenaltyService;

@@ -4,17 +4,13 @@ import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.entity.Penalty;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
 import com.example.smev_gisgmp.exception_handling.InformationRequestException;
-import com.example.smev_gisgmp.exception_handling.NoPenaltyException;
-import com.example.smev_gisgmp.repository.AcknowledgeRepository;
 import com.example.smev_gisgmp.repository.InformationRequestRepository;
 import com.example.smev_gisgmp.repository.PenaltyRepository;
 import com.example.smev_gisgmp.repository.PenaltyToResponseRepository;
-import com.example.smev_gisgmp.services.AcknowledgeService;
 import com.example.smev_gisgmp.services.PenaltyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,7 @@ public class PenaltyServiceImpl implements PenaltyService {
     @Override
     public List<PenaltyToResponse> getPenalty(String vehicleCertificate) {
 
-        List<PenaltyToResponse> penalties1 = new ArrayList<>();
+        List<PenaltyToResponse> penaltyToResponseList1;
 
         Thread thread = new Thread(() -> {
             try {
@@ -43,30 +39,33 @@ public class PenaltyServiceImpl implements PenaltyService {
                 List<Penalty> penalties = penaltyRepository.getPenaltiesByVehicleCertificate(informationRequest.get().getVehicleCertificate());
                 List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
                 for (Penalty penalty : penalties) {
-                    penaltyToResponseList.add(change(penalty));
+                    penaltyToResponseList.add(changePenaltyToPenaltyResponse(penalty));
                 }
                 for (PenaltyToResponse p : penaltyToResponseList) {
                     p.setResponseId(informationRequest.get().getId());
                 }
-                penaltyToResponseRepository.saveAll(penaltyToResponseList);
-                informationRequestRepository.delete(informationRequest.get());
+                List<PenaltyToResponse> all = penaltyToResponseRepository.findAll();
+                if (all.size() == 0) {
+                    penaltyToResponseRepository.saveAll(penaltyToResponseList);
+                    informationRequestRepository.delete(informationRequest.get());
+                }
             } catch (NullPointerException e) {
                 throw new IllegalArgumentException("server out of order");
             }
         });
+
         thread.start();
 
+        penaltyToResponseList1 = penaltyToResponseRepository.findAll();
         int simulatorChance = (int) (Math.random() * 10);
         log.info(String.valueOf(simulatorChance));
-        if (simulatorChance == 1 || simulatorChance == 2 || simulatorChance == 3) {
-            penalties1 = penaltyToResponseRepository.findAll();
+        if (simulatorChance == 1 || simulatorChance == 2 || simulatorChance == 3 || simulatorChance == 4) {
+            penaltyToResponseList1 = penaltyToResponseRepository.findAll();
         }
-
-
-        return penalties1;
+        return penaltyToResponseList1;
     }
 
-    public static PenaltyToResponse change(Penalty penalty) {
+    public static PenaltyToResponse changePenaltyToPenaltyResponse(Penalty penalty) {
         PenaltyToResponse penaltyToResponse = new PenaltyToResponse();
         penaltyToResponse.setAccruedAmount(penalty.getAccruedAmount());
         penaltyToResponse.setVehicleCertificate(penalty.getVehicleCertificate());

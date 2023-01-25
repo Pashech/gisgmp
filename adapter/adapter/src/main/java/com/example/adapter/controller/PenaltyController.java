@@ -1,11 +1,11 @@
 package com.example.adapter.controller;
 
-import com.example.adapter.client.ClientHttp;
 import com.example.adapter.model.InfoRequest;
 import com.example.adapter.model.Penalty;
+import com.example.adapter.model.dto.PenaltyDto;
 import com.example.adapter.service.PenaltyClientService;
+import com.example.adapter.service.impl.InfoRequestService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,15 +21,15 @@ import java.util.List;
 public class PenaltyController {
 
     private final PenaltyClientService penaltyClientService;
-    private final ClientHttp clientHttp;
+    private final InfoRequestService infoRequestService;
 
     @PostMapping("/info/request/")
-    public ResponseEntity<InfoRequest> sendInfoRequest(@Valid @RequestBody InfoRequest infoRequest){
-        return clientHttp.sendInfoRequest(infoRequest);
+    public ResponseEntity<InfoRequest> sendInfoRequest(@RequestBody InfoRequest infoRequest){
+        return infoRequestService.sendInfoRequest(infoRequest);
     }
 
     @GetMapping("/getPenalties/{vehicleCertificate}")
-    public ResponseEntity<List<Penalty>> getPenalties(@PathVariable("vehicleCertificate") String vehicleCertificate){
+    public ResponseEntity<List<PenaltyDto>> getPenalties(@PathVariable("vehicleCertificate") String vehicleCertificate){
         return penaltyClientService.getPenalty(vehicleCertificate);
     }
 }
