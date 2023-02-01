@@ -1,0 +1,18 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="insert-penalty" author="Pashech">
+        <insert tableName="penalties">
+            <column name="id" valueNumeric="1"/>
+            <column name="accruedAmount" valueNumeric="37"/>
+            <column name="amountPayable" valueNumeric="37"/>
+            <column name="resolutionNumber" valueNumeric="215"/>
+            <column name="vehicleCertificate" value="ETA123456"/>
+            <column name="decisionDate" valueDate="2023-01-12"/>
+            <column name="articleKoAP" value="234.p5"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
