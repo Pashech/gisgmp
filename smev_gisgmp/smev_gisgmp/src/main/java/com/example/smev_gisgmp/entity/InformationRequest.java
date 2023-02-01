@@ -15,15 +15,15 @@ import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
 @Entity
-@Table(name = "information_of_penalty")
+//@Table(name = "information")
 @Getter
 @Setter
 @ToString
 public class InformationRequest {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "vehicle_certificate")
+    @Column(name = "certificate")
     private String vehicleCertificate;
 }

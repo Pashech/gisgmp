@@ -1,0 +1,19 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-penalties" author="Pashech">
+        <createTable tableName="penalties">
+            <column name="id" type="Long" autoIncrement="true"/>
+            <column name="accruedAmount" type="decimal"/>
+            <column name="amountPayable" type="decimal"/>
+            <column name="resolutionNumber" type="int"/>
+            <column name="vehicleCertificate" type="varchar"/>
+            <column name="decisionDate" type="date"/>
+            <column name="articleKoAP" type="varchar"/>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
