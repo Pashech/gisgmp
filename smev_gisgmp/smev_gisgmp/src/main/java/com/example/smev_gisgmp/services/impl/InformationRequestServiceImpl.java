@@ -14,17 +14,21 @@ import org.springframework.stereotype.Service;
 public class InformationRequestServiceImpl implements InformationRequestService {
 
     private final JdbcTemplate jdbcTemplate;
-    private final static String SELECT_QUERY = "SELECT id FROM information WHERE vehicleCertificate=?";
+    private final static String SELECT_QUERY = "SELECT * FROM information WHERE vehicleCertificate=?";
 
     @Override
     public InformationRequest saveInformationRequest(InformationRequest informationRequest) {
         jdbcTemplate.update("INSERT INTO information VALUES(1, ?)", informationRequest.getVehicleCertificate());
-        InformationRequest informationRequest1 = jdbcTemplate.query(SELECT_QUERY, new BeanPropertyRowMapper<>(InformationRequest.class), new Object[]{informationRequest.getVehicleCertificate()})
-                .stream()
-                .findAny().orElse(new InformationRequest());
-        log.info(String.valueOf(informationRequest1));
-
-
+        log.info(String.valueOf(informationRequest) + "from save method");
         return informationRequest;
     }
+
+    @Override
+    public InformationRequest getInformationRequest(String vehicleCertificate) {
+        return jdbcTemplate.query(SELECT_QUERY, new BeanPropertyRowMapper<>(InformationRequest.class), new Object[]{vehicleCertificate})
+                .stream()
+                .findAny()
+                .orElse(new InformationRequest());
+    }
 }
+

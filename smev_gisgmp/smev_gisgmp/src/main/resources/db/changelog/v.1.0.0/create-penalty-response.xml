@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="create-table-penalty-to-response" author="Pashech">
-        <createTable tableName="penalty-to-response">
+        <createTable tableName="penaltyToResponse">
             <column name="id" type="Long" autoIncrement="true"/>
             <column name="accruedAmount" type="decimal"/>
             <column name="amountPayable" type="decimal"/>

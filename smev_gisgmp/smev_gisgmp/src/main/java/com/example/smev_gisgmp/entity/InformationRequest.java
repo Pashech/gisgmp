@@ -14,16 +14,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
-@Entity
-//@Table(name = "information")
 @Getter
 @Setter
 @ToString
 public class InformationRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "certificate")
     private String vehicleCertificate;
 }

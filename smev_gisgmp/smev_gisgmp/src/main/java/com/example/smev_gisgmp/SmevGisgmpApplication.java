@@ -1,7 +1,6 @@
 package com.example.smev_gisgmp;
 
 
-import com.example.smev_gisgmp.repository.PenaltyToResponseRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
