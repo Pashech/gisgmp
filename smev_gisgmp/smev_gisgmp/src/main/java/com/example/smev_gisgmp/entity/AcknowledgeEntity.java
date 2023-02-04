@@ -9,16 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
-@Table(name = "acknowledge")
 public class AcknowledgeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "response_id")
-    private Long responseId;
+    private UUID id;
+    private UUID responseId;
 }

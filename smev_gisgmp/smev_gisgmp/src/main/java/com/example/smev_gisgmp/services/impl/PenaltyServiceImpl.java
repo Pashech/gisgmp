@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -25,46 +26,38 @@ public class PenaltyServiceImpl implements PenaltyService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) {
-
-        List<PenaltyToResponse> penaltyToResponseList1;
-
+    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws InterruptedException {
+        List<PenaltyToResponse> penaltyToResponseList1 = new ArrayList<>();
         Thread thread = new Thread(() -> {
-            try {
-                log.info("Worker has started!!!");
-                InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate);
-                log.info(informationRequest + "from impl");
-                log.info("Request ID : " + informationRequest.getId());
-                List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.getVehicleCertificate());
-                log.info(penalties + " from penalties");
-
-                List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
-                for (Penalty penalty : penalties) {
-                    penaltyToResponseList.add(changePenaltyToPenaltyResponse(penalty));
-                }
-                for (PenaltyToResponse p : penaltyToResponseList) {
-                    p.setResponseId(informationRequest.getId());
-                }
-                log.info(penaltyToResponseList + "penalty to response list");
-                for(PenaltyToResponse penaltyToResponse : penaltyToResponseList){
-                    penaltyToResponseRepository.savePenaltyToResponse(penaltyToResponse);
-                    log.info("save");
-                }
-                //List<PenaltyToResponse> all = penaltyToResponseRepository.getAllPenalties();
-            } catch (NullPointerException e) {
-                throw new IllegalArgumentException("server out of order");
+            log.info("Worker has started!!!");
+            InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate);
+            List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.getVehicleCertificate());
+            List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
+            for (Penalty penalty : penalties) {
+                penaltyToResponseList.add(changePenaltyToPenaltyResponse(penalty));
             }
+            for (PenaltyToResponse p : penaltyToResponseList) {
+                p.setResponseId(informationRequest.getId());
+            }
+            List<PenaltyToResponse> all = penaltyToResponseRepository.getAllPenalties();
+            if (all.size() == 0) {
+                for (PenaltyToResponse penaltyToResponse : penaltyToResponseList) {
+                    penaltyToResponseRepository.savePenaltyToResponse(penaltyToResponse);
+                    log.info("penalty was saved");
+                    informationRequestService.deleteInformationRequest(vehicleCertificate);
+                }
+            }
+            log.info("worker finished");
         });
 
         thread.start();
+        Thread.sleep(1000);
 
-        penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
-        log.info(penaltyToResponseList1 + "penalty to response");
-//        int simulatorChance = (int) (Math.random() * 10);
-//        log.info(String.valueOf(simulatorChance));
-//        if (simulatorChance == 1 || simulatorChance == 2 || simulatorChance == 3 || simulatorChance == 4) {
-//            penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
-//        }
+        int simulatorChance = (int) (Math.random() * 10);
+        log.info(String.valueOf(simulatorChance));
+        if (simulatorChance == 1 || simulatorChance == 2 || simulatorChance == 3 || simulatorChance == 4) {
+            penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
+        }
         return penaltyToResponseList1;
     }
 
@@ -73,7 +66,7 @@ public class PenaltyServiceImpl implements PenaltyService {
         return jdbcTemplate.query("SELECT * FROM penalties WHERE vehicleCertificate = ?", new BeanPropertyRowMapper<>(Penalty.class), vehicleCertificate);
     }
 
-        public static PenaltyToResponse changePenaltyToPenaltyResponse(Penalty penalty) {
+    public static PenaltyToResponse changePenaltyToPenaltyResponse(Penalty penalty) {
         PenaltyToResponse penaltyToResponse = new PenaltyToResponse();
         penaltyToResponse.setAccruedAmount(penalty.getAccruedAmount());
         penaltyToResponse.setVehicleCertificate(penalty.getVehicleCertificate());

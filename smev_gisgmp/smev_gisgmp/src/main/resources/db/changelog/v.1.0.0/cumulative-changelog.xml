@@ -11,7 +11,6 @@
     <include file="create-table.xml" relativeToChangelogFile="true"/>
     <include file="insert-penalty.xml" relativeToChangelogFile="true"/>
     <include file="create-penalty-response.xml" relativeToChangelogFile="true"/>
-    <include file="create-table-acknowledge.xml" relativeToChangelogFile="true"/>
     <include file="create-table-informationRequest.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

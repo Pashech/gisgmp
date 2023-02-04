@@ -33,5 +33,10 @@ public class InformationRequestServiceImpl implements InformationRequestService 
                 .findAny()
                 .orElse(new InformationRequest());
     }
+
+    @Override
+    public void deleteInformationRequest(String vehicleCertificate) {
+        jdbcTemplate.update("DELETE FROM information WHERE vehicleCertificate = ?", vehicleCertificate);
+    }
 }
 

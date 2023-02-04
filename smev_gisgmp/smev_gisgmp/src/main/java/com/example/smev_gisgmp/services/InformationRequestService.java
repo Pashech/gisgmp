@@ -8,4 +8,5 @@ public interface InformationRequestService {
 
     InformationRequest saveInformationRequest(InformationRequest informationRequest);
     InformationRequest getInformationRequest(String vehicleCertificate);
+    void deleteInformationRequest(String vehicleCertificate);
 }

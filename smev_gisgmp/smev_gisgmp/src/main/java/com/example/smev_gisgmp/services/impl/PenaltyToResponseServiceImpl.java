@@ -23,6 +23,7 @@ public class PenaltyToResponseServiceImpl implements PenaltyToResponseService {
 
     @Override
     public void deleteAllPenalties() {
+        jdbcTemplate.update("DELETE FROM penaltyToResponse");
 
     }
 
