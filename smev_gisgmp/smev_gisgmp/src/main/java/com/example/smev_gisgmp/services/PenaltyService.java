@@ -8,6 +8,6 @@ import java.util.List;
 public interface PenaltyService {
 
     List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws InterruptedException;
-    //List<Penalty> getPenaltiesByVehicleCertificate(String vehicleCertificate);
+    List<Penalty> getPenaltiesByVehicleCertificate(String vehicleCertificate);
 
 }

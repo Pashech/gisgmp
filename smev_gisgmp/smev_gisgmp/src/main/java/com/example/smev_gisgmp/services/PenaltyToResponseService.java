@@ -10,4 +10,6 @@ public interface PenaltyToResponseService {
     Optional<PenaltyToResponse> getPenaltyToResponseById(Long id);
     List<PenaltyToResponse> getAllPenalties();
     void deleteAllPenalties();
+
+    int savePenaltyToResponse(PenaltyToResponse penaltyToResponse);
 }

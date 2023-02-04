@@ -5,7 +5,7 @@
 
     <changeSet id="create-table-informationRequest" author="Pashech">
         <createTable tableName="information">
-            <column name="id" type="Long" autoIncrement="true"/>
+            <column name="id" type="UUID"/>
             <column name="vehicleCertificate" type="varchar"/>
         </createTable>
 

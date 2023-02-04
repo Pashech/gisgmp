@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @Getter
 @Setter
@@ -13,5 +15,5 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class Acknowledge {
 
-    private Long responseId;
+    private UUID responseId;
 }

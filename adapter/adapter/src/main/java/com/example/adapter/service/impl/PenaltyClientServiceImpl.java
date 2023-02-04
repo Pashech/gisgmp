@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,12 +34,12 @@ public class PenaltyClientServiceImpl implements PenaltyClientService {
         if(penaltyList.getBody().size() == 0){
             throw new NoPenaltyFoundException("No any penalty");
         }
-        if(penaltyList.getStatusCode().is2xxSuccessful() && penaltyList.getBody().size() != 0){
-            Long responseId = penaltyList.getBody().get(0).getResponseId();
-            Acknowledge acknowledge = new Acknowledge();
-            acknowledge.setResponseId(responseId);
-            clientHttp.sendAcknowledge(acknowledge);
-        }
+//        if(penaltyList.getStatusCode().is2xxSuccessful() && penaltyList.getBody().size() != 0){
+//            UUID responseId = penaltyList.getBody().get(0).getResponseId();
+//            Acknowledge acknowledge = new Acknowledge();
+//            acknowledge.setResponseId(responseId);
+//            clientHttp.sendAcknowledge(acknowledge);
+//        }
         return new ResponseEntity<>(penaltyDtoList, HttpStatus.OK);
     }
 }

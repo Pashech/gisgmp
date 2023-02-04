@@ -19,6 +19,6 @@ import java.util.UUID;
 @ToString
 public class InformationRequest {
 
-    private Long id;
+    private UUID id;
     private String vehicleCertificate;
 }

@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,5 +23,5 @@ public class Penalty {
     private String vehicleCertificate;
     private LocalDate decisionDate;
     private String articleKoAP;
-    private Long responseId;
+    private UUID responseId;
 }

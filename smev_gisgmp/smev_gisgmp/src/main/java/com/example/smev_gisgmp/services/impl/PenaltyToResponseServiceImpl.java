@@ -15,6 +15,7 @@ import java.util.Optional;
 public class PenaltyToResponseServiceImpl implements PenaltyToResponseService {
 
     private final JdbcTemplate jdbcTemplate;
+
     @Override
     public Optional<PenaltyToResponse> getPenaltyToResponseById(Long id) {
         return null;
@@ -23,6 +24,20 @@ public class PenaltyToResponseServiceImpl implements PenaltyToResponseService {
     @Override
     public void deleteAllPenalties() {
 
+    }
+
+    @Override
+    public int savePenaltyToResponse(PenaltyToResponse penaltyToResponse) {
+        return jdbcTemplate.update("INSERT INTO penaltyToResponse VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                penaltyToResponse.getId(),
+                penaltyToResponse.getAccruedAmount(),
+                penaltyToResponse.getAmountPayable(),
+                penaltyToResponse.getResolutionNumber(),
+                penaltyToResponse.getVehicleCertificate(),
+                penaltyToResponse.getDecisionDate(),
+                penaltyToResponse.getArticleKoAP(),
+                penaltyToResponse.getResponseId()
+        );
     }
 
     @Override

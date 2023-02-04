@@ -5,7 +5,7 @@
 
     <changeSet id="create-table-penalties" author="Pashech">
         <createTable tableName="penalties">
-            <column name="id" type="Long" autoIncrement="true"/>
+            <column name="id" type="uuid" autoIncrement="${autoIncrement}"/>
             <column name="accruedAmount" type="decimal"/>
             <column name="amountPayable" type="decimal"/>
             <column name="resolutionNumber" type="int"/>

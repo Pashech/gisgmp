@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -18,8 +20,9 @@ public class InformationRequestServiceImpl implements InformationRequestService 
 
     @Override
     public InformationRequest saveInformationRequest(InformationRequest informationRequest) {
-        jdbcTemplate.update("INSERT INTO information VALUES(1, ?)", informationRequest.getVehicleCertificate());
-        log.info(String.valueOf(informationRequest) + "from save method");
+        informationRequest.setId(UUID.randomUUID());
+        jdbcTemplate.update("INSERT INTO information VALUES(?, ?)",informationRequest.getId(), informationRequest.getVehicleCertificate());
+        log.info(informationRequest + "from save method");
         return informationRequest;
     }
 

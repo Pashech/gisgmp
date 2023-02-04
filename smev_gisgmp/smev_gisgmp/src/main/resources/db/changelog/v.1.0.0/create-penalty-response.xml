@@ -5,14 +5,14 @@
 
     <changeSet id="create-table-penalty-to-response" author="Pashech">
         <createTable tableName="penaltyToResponse">
-            <column name="id" type="Long" autoIncrement="true"/>
+            <column name="id" type="UUID" autoIncrement="${autoIncrement}"/>
             <column name="accruedAmount" type="decimal"/>
             <column name="amountPayable" type="decimal"/>
             <column name="resolutionNumber" type="int"/>
             <column name="vehicleCertificate" type="varchar"/>
             <column name="decisionDate" type="date"/>
             <column name="articleKoAP" type="varchar"/>
-            <column name="responseId" type="Long"/>
+            <column name="responseId" type="UUID"/>
         </createTable>
 
     </changeSet>

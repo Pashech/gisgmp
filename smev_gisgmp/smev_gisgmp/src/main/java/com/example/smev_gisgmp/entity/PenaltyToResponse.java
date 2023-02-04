@@ -12,18 +12,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
 public class PenaltyToResponse {
 
-    private Long id;
+    private UUID id;
     private BigDecimal accruedAmount;
     private BigDecimal amountPayable;
     private int resolutionNumber;
     private String vehicleCertificate;
     private LocalDate decisionDate;
     private String articleKoAP;
-    private Long responseId;
+    private UUID responseId;
 }

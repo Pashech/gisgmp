@@ -17,13 +17,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
 public class Penalty {
 
-    private Long id;
+    private UUID id;
     private BigDecimal accruedAmount;
     private BigDecimal amountPayable;
     private int resolutionNumber;
