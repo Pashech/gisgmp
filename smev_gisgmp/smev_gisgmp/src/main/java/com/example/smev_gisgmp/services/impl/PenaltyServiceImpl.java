@@ -3,6 +3,8 @@ package com.example.smev_gisgmp.services.impl;
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.entity.Penalty;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
+import com.example.smev_gisgmp.exception_handling.InformationRequestException;
+import com.example.smev_gisgmp.exception_handling.NoPenaltyException;
 import com.example.smev_gisgmp.services.InformationRequestService;
 import com.example.smev_gisgmp.services.PenaltyService;
 import com.example.smev_gisgmp.services.PenaltyToResponseService;
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import static com.example.smev_gisgmp.constants.Constants.SELECT_PENALTY_QUERY;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +34,11 @@ public class PenaltyServiceImpl implements PenaltyService {
         List<PenaltyToResponse> penaltyToResponseList1 = new ArrayList<>();
         Thread thread = new Thread(() -> {
             log.info("Worker has started!!!");
-            InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate);
+            InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate).get();
             List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.getVehicleCertificate());
+            if(penalties.size() == 0){
+                throw new NoPenaltyException("Penalty not found");
+            }
             List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
             for (Penalty penalty : penalties) {
                 penaltyToResponseList.add(changePenaltyToPenaltyResponse(penalty));
@@ -43,7 +50,6 @@ public class PenaltyServiceImpl implements PenaltyService {
             if (all.size() == 0) {
                 for (PenaltyToResponse penaltyToResponse : penaltyToResponseList) {
                     penaltyToResponseRepository.savePenaltyToResponse(penaltyToResponse);
-                    log.info("penalty was saved");
                     informationRequestService.deleteInformationRequest(vehicleCertificate);
                 }
             }
@@ -63,7 +69,7 @@ public class PenaltyServiceImpl implements PenaltyService {
 
     @Override
     public List<Penalty> getPenaltiesByVehicleCertificate(String vehicleCertificate) {
-        return jdbcTemplate.query("SELECT * FROM penalties WHERE vehicleCertificate = ?", new BeanPropertyRowMapper<>(Penalty.class), vehicleCertificate);
+        return jdbcTemplate.query(SELECT_PENALTY_QUERY, new BeanPropertyRowMapper<>(Penalty.class), vehicleCertificate);
     }
 
     public static PenaltyToResponse changePenaltyToPenaltyResponse(Penalty penalty) {

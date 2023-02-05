@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface PenaltyToResponseService {
 
-    Optional<PenaltyToResponse> getPenaltyToResponseById(Long id);
     List<PenaltyToResponse> getAllPenalties();
     void deleteAllPenalties();
 

@@ -27,13 +27,14 @@ public class PenaltyClientServiceImpl implements PenaltyClientService {
     @Override
     public ResponseEntity<List<PenaltyDto>> getPenalty(String vehicleCertificate) {
         ResponseEntity<List<Penalty>> penaltyList = clientHttp.getPenaltyFromSmev(vehicleCertificate);
+//        if(penaltyList.getBody().size() == 0){
+//            throw new NoPenaltyFoundException("No any penalty");
+//        }
         List<PenaltyDto> penaltyDtoList = new ArrayList<>();
         for(int i = 0; i < Objects.requireNonNull(penaltyList.getBody()).size(); i++){
             penaltyDtoList.add(penaltyMapper.penaltyToDto(penaltyList.getBody().get(i)));
         }
-        if(penaltyList.getBody().size() == 0){
-            throw new NoPenaltyFoundException("No any penalty");
-        }
+
         if(penaltyList.getStatusCode().is2xxSuccessful() && penaltyList.getBody().size() != 0){
             UUID responseId = penaltyList.getBody().get(0).getResponseId();
             Acknowledge acknowledge = new Acknowledge();

@@ -8,7 +8,12 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
+
+import static com.example.smev_gisgmp.constants.Constants.DELETE_INFORMATION;
+import static com.example.smev_gisgmp.constants.Constants.INSERT_INFORMATION;
+import static com.example.smev_gisgmp.constants.Constants.SELECT_INFORMATION_QUERY;
 
 @Service
 @RequiredArgsConstructor
@@ -16,27 +21,36 @@ import java.util.UUID;
 public class InformationRequestServiceImpl implements InformationRequestService {
 
     private final JdbcTemplate jdbcTemplate;
-    private final static String SELECT_QUERY = "SELECT * FROM information WHERE vehicleCertificate=?";
+
+    @Override
+    public InformationRequest getInformationRequestByVehicleCertificate(String vehicleCertificate) {
+        return jdbcTemplate.query(SELECT_INFORMATION_QUERY, new BeanPropertyRowMapper<>(InformationRequest.class), new Object[]{vehicleCertificate})
+                .stream().findAny().orElse(null);
+    }
 
     @Override
     public InformationRequest saveInformationRequest(InformationRequest informationRequest) {
-        informationRequest.setId(UUID.randomUUID());
-        jdbcTemplate.update("INSERT INTO information VALUES(?, ?)",informationRequest.getId(), informationRequest.getVehicleCertificate());
+        InformationRequest informationRequest1 = getInformationRequestByVehicleCertificate(informationRequest.getVehicleCertificate());
+        if(informationRequest1 == null){
+            informationRequest.setId(UUID.randomUUID());
+            jdbcTemplate.update(INSERT_INFORMATION,informationRequest.getId(), informationRequest.getVehicleCertificate());
+        }
+
         log.info(informationRequest + "from save method");
         return informationRequest;
     }
 
     @Override
-    public InformationRequest getInformationRequest(String vehicleCertificate) {
-        return jdbcTemplate.query(SELECT_QUERY, new BeanPropertyRowMapper<>(InformationRequest.class), new Object[]{vehicleCertificate})
+    public Optional<InformationRequest> getInformationRequest(String vehicleCertificate) {
+        return Optional.of(jdbcTemplate.query(SELECT_INFORMATION_QUERY, new BeanPropertyRowMapper<>(InformationRequest.class), new Object[]{vehicleCertificate})
                 .stream()
                 .findAny()
-                .orElse(new InformationRequest());
+                .orElse(new InformationRequest()));
     }
 
     @Override
     public void deleteInformationRequest(String vehicleCertificate) {
-        jdbcTemplate.update("DELETE FROM information WHERE vehicleCertificate = ?", vehicleCertificate);
+        jdbcTemplate.update(DELETE_INFORMATION, vehicleCertificate);
     }
 }
 

@@ -3,6 +3,7 @@ package com.example.adapter.client;
 import com.example.adapter.model.Acknowledge;
 import com.example.adapter.model.InfoRequest;
 import com.example.adapter.model.Penalty;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class ClientHttp {
 
     private static final String URL = "http://localhost:8081/get/penalties/";

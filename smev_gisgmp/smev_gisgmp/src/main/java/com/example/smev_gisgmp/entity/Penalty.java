@@ -1,5 +1,6 @@
 package com.example.smev_gisgmp.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -31,4 +32,5 @@ public class Penalty {
     private String vehicleCertificate;
     private LocalDate decisionDate;
     private String articleKoAP;
+
 }

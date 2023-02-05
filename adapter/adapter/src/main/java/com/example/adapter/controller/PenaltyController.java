@@ -1,7 +1,6 @@
 package com.example.adapter.controller;
 
 import com.example.adapter.model.InfoRequest;
-import com.example.adapter.model.Penalty;
 import com.example.adapter.model.dto.PenaltyDto;
 import com.example.adapter.service.PenaltyClientService;
 import com.example.adapter.service.impl.InfoRequestService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

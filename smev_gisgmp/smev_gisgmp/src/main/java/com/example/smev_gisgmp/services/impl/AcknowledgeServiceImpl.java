@@ -14,12 +14,9 @@ public class AcknowledgeServiceImpl implements AcknowledgeService {
 
     @Override
     public AcknowledgeEntity createAcknowledge(AcknowledgeEntity acknowledge) {
-        //acknowledgeRepository.save(acknowledge);
         if(acknowledge.getResponseId().equals(penaltyToResponseRepository.getAllPenalties().get(0).getResponseId())){
             penaltyToResponseRepository.deleteAllPenalties();
         }
-        //acknowledgeRepository.delete(acknowledge);
-
         return acknowledge;
     }
 }
