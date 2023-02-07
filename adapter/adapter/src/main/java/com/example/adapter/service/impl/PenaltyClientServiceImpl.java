@@ -20,16 +20,14 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PenaltyClientServiceImpl implements PenaltyClientService {
-
     private final ClientHttp clientHttp;
     private final PenaltyMapper penaltyMapper;
-
     @Override
     public ResponseEntity<List<PenaltyDto>> getPenalty(String vehicleCertificate) {
         ResponseEntity<List<Penalty>> penaltyList = clientHttp.getPenaltyFromSmev(vehicleCertificate);
-//        if(penaltyList.getBody().size() == 0){
-//            throw new NoPenaltyFoundException("No any penalty");
-//        }
+        if(penaltyList.getBody().size() == 0){
+            throw new NoPenaltyFoundException("No any penalty");
+        }
         List<PenaltyDto> penaltyDtoList = new ArrayList<>();
         for(int i = 0; i < Objects.requireNonNull(penaltyList.getBody()).size(); i++){
             penaltyDtoList.add(penaltyMapper.penaltyToDto(penaltyList.getBody().get(i)));

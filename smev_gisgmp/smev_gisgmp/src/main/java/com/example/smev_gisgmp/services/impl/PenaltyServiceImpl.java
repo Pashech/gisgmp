@@ -3,8 +3,8 @@ package com.example.smev_gisgmp.services.impl;
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.entity.Penalty;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
-import com.example.smev_gisgmp.exception_handling.InformationRequestException;
 import com.example.smev_gisgmp.exception_handling.NoPenaltyException;
+import com.example.smev_gisgmp.exception_handling.ServerSvemException;
 import com.example.smev_gisgmp.services.InformationRequestService;
 import com.example.smev_gisgmp.services.PenaltyService;
 import com.example.smev_gisgmp.services.PenaltyToResponseService;
@@ -14,10 +14,13 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.rmi.ServerError;
+import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import static com.example.smev_gisgmp.constants.Constants.SELECT_PENALTY_QUERY;
 
 @Service
@@ -30,15 +33,33 @@ public class PenaltyServiceImpl implements PenaltyService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws InterruptedException {
-        List<PenaltyToResponse> penaltyToResponseList1 = new ArrayList<>();
+    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws InterruptedException, NoPenaltyException, ServerSvemException  {
+        List<PenaltyToResponse> penaltyToResponseList1;
         Thread thread = new Thread(() -> {
             log.info("Worker has started!!!");
             InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate).get();
             List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.getVehicleCertificate());
-            if(penalties.size() == 0){
+            if (penalties.size() == 0) {
                 throw new NoPenaltyException("Penalty not found");
             }
+
+            int x = 0;
+            int count = 0;
+            while (x <= 0) {
+                x = (int) (Math.random() * 10 - 5);
+                log.info(String.valueOf(x));
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                count++;
+                if (count == 4) {
+                    log.error("Server is unavailable");
+                    throw new ServerSvemException("Server is unavailable");
+                }
+            }
+
             List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
             for (Penalty penalty : penalties) {
                 penaltyToResponseList.add(changePenaltyToPenaltyResponse(penalty));
@@ -59,11 +80,7 @@ public class PenaltyServiceImpl implements PenaltyService {
         thread.start();
         Thread.sleep(1000);
 
-        int simulatorChance = (int) (Math.random() * 10);
-        log.info(String.valueOf(simulatorChance));
-        if (simulatorChance == 1 || simulatorChance == 2 || simulatorChance == 3 || simulatorChance == 4) {
-            penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
-        }
+        penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
         return penaltyToResponseList1;
     }
 

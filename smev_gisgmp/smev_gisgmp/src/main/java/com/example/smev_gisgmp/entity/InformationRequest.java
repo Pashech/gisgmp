@@ -20,5 +20,6 @@ import java.util.UUID;
 public class InformationRequest {
 
     private UUID id;
+    @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "the certificate does not match the format, for example 'XXX111111'")
     private String vehicleCertificate;
 }
