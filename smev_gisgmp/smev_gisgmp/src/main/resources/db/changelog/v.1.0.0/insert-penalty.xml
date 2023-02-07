@@ -5,7 +5,7 @@
 
     <changeSet id="insert-penalty" author="Pashech">
         <insert tableName="penalties">
-            <column name="id" type="1"/>
+            <column name="id" type="uuid"/>
             <column name="accruedAmount" valueNumeric="37"/>
             <column name="amountPayable" valueNumeric="37"/>
             <column name="resolutionNumber" valueNumeric="215"/>

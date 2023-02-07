@@ -31,17 +31,17 @@ public class PenaltyController {
 
     @GetMapping("/get/penalties/{vehicleCertificate}")
     public ResponseEntity<List<PenaltyToResponse>> getPenalties(@Valid @PathVariable("vehicleCertificate")
-                                                                    @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "the certificate does not match the format, for example 'XXX111111'") String vehicleCertificate) throws InterruptedException {
+                                                                @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "the certificate does not match the format, for example 'XXX111111'") String vehicleCertificate) throws InterruptedException {
         return new ResponseEntity<>(penaltyService.getPenalty(vehicleCertificate), HttpStatus.OK);
     }
 
     @PostMapping("/acknowledge/")
-    public ResponseEntity<AcknowledgeEntity> createAcknowledge(@RequestBody AcknowledgeEntity acknowledge){
+    public ResponseEntity<AcknowledgeEntity> createAcknowledge(@RequestBody AcknowledgeEntity acknowledge) {
         return new ResponseEntity<>(acknowledgeService.createAcknowledge(acknowledge), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
-    public void delete(){
+    public void delete() {
         penaltyToResponseService.deleteAllPenalties();
     }
 }

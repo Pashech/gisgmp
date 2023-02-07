@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.smev_gisgmp.constants.Constants.DELETE_ALL_PENALTIES_TO_RESPONSE;
 import static com.example.smev_gisgmp.constants.Constants.INSERT_PENALTY_TO_RESPONSE;

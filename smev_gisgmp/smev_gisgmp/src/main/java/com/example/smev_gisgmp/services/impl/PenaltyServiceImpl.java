@@ -3,6 +3,7 @@ package com.example.smev_gisgmp.services.impl;
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.entity.Penalty;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
+import com.example.smev_gisgmp.exception_handling.InformationRequestException;
 import com.example.smev_gisgmp.exception_handling.NoPenaltyException;
 import com.example.smev_gisgmp.exception_handling.ServerSvemException;
 import com.example.smev_gisgmp.services.InformationRequestService;
@@ -14,12 +15,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.rmi.ServerError;
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.example.smev_gisgmp.constants.Constants.SELECT_PENALTY_QUERY;
 
@@ -37,7 +34,8 @@ public class PenaltyServiceImpl implements PenaltyService {
         List<PenaltyToResponse> penaltyToResponseList1;
         Thread thread = new Thread(() -> {
             log.info("Worker has started!!!");
-            InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate).get();
+            InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate).orElseThrow(
+                    () -> new InformationRequestException("Information request not found"));
             List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.getVehicleCertificate());
             if (penalties.size() == 0) {
                 throw new NoPenaltyException("Penalty not found");
