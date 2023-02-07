@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.example.smev_gisgmp.constants.Constants.SELECT_PENALTY_QUERY;
 
@@ -32,7 +34,9 @@ public class PenaltyServiceImpl implements PenaltyService {
     @Override
     public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws InterruptedException, NoPenaltyException, ServerSvemException  {
         List<PenaltyToResponse> penaltyToResponseList1;
-        Thread thread = new Thread(() -> {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.execute(() -> {
             log.info("Worker has started!!!");
             InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate).orElseThrow(
                     () -> new InformationRequestException("Information request not found"));
@@ -74,8 +78,8 @@ public class PenaltyServiceImpl implements PenaltyService {
             }
             log.info("worker finished");
         });
+        executorService.shutdown();
 
-        thread.start();
         Thread.sleep(1000);
 
         penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
