@@ -15,6 +15,6 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InfoRequest {
-    @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "the certificate does not match the format, for example 'XXX111111'")
+    @Pattern(regexp = "[A-Z]{3}\\d{6}", message = "the certificate does not match the format, for example 'XXX111111'")
     private String vehicleCertificate;
 }

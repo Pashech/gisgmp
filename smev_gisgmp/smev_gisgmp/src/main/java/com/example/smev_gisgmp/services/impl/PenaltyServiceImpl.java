@@ -32,7 +32,7 @@ public class PenaltyServiceImpl implements PenaltyService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws InterruptedException, NoPenaltyException, ServerSvemException  {
+    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws NoPenaltyException, ServerSvemException  {
         List<PenaltyToResponse> penaltyToResponseList1;
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
@@ -80,7 +80,11 @@ public class PenaltyServiceImpl implements PenaltyService {
         });
         executorService.shutdown();
 
-        Thread.sleep(1000);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
         return penaltyToResponseList1;
