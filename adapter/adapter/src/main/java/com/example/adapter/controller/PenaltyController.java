@@ -3,7 +3,7 @@ package com.example.adapter.controller;
 import com.example.adapter.model.InfoRequest;
 import com.example.adapter.model.dto.PenaltyDto;
 import com.example.adapter.service.PenaltyClientService;
-import com.example.adapter.service.impl.InfoRequestService;
+import com.example.adapter.service.InfoRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

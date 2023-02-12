@@ -17,8 +17,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static com.example.smev_gisgmp.constants.Constants.SELECT_PENALTY_QUERY;
 
@@ -32,43 +35,32 @@ public class PenaltyServiceImpl implements PenaltyService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws NoPenaltyException, ServerSvemException  {
+    public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws NoPenaltyException, ServerSvemException {
         List<PenaltyToResponse> penaltyToResponseList1;
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
-        executorService.execute(() -> {
+        Future<?> future = executorService.submit(() -> {
             log.info("Worker has started!!!");
-            InformationRequest informationRequest = informationRequestService.getInformationRequest(vehicleCertificate).orElseThrow(
-                    () -> new InformationRequestException("Information request not found"));
-            List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.getVehicleCertificate());
+            Optional<InformationRequest> informationRequest = informationRequestService.getInformationRequest(vehicleCertificate);
+            if (informationRequest.get().getVehicleCertificate() == null) {
+                throw new InformationRequestException("Information request not found");
+            }
+            List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.get().getVehicleCertificate());
             if (penalties.size() == 0) {
                 throw new NoPenaltyException("Penalty not found");
             }
 
-            int x = 0;
-            int count = 0;
-            while (x <= 0) {
-                x = (int) (Math.random() * 10 - 5);
-                log.info(String.valueOf(x));
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                count++;
-                if (count == 4) {
-                    log.error("Server is unavailable");
-                    throw new ServerSvemException("Server is unavailable");
-                }
-            }
+            emulateServerError();
 
             List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
             for (Penalty penalty : penalties) {
                 penaltyToResponseList.add(changePenaltyToPenaltyResponse(penalty));
             }
+
             for (PenaltyToResponse p : penaltyToResponseList) {
-                p.setResponseId(informationRequest.getId());
+                p.setResponseId(informationRequest.get().getId());
             }
+
             List<PenaltyToResponse> all = penaltyToResponseRepository.getAllPenalties();
             if (all.size() == 0) {
                 for (PenaltyToResponse penaltyToResponse : penaltyToResponseList) {
@@ -78,16 +70,39 @@ public class PenaltyServiceImpl implements PenaltyService {
             }
             log.info("worker finished");
         });
-        executorService.shutdown();
 
         try {
+            future.get();
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            e.getCause();
+        } finally {
+            executorService.shutdown();
         }
 
         penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
         return penaltyToResponseList1;
+    }
+
+    private void emulateServerError(){
+        int x = 0;
+        int count = 0;
+        while (x <= 0) {
+            x = (int) (Math.random() * 10 - 5);
+            log.info(String.valueOf(x));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            count++;
+            if (count == 4) {
+                log.error("Server is unavailable");
+                throw new ServerSvemException("Server is unavailable");
+            }
+        }
     }
 
     @Override

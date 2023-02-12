@@ -1,4 +1,4 @@
-package com.example.adapter.service.impl;
+package com.example.adapter.service;
 
 import com.example.adapter.model.Acknowledge;
 import com.example.adapter.model.InfoRequest;

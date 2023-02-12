@@ -3,6 +3,7 @@ package com.example.adapter.service.impl;
 import com.example.adapter.client.ClientHttp;
 import com.example.adapter.model.Acknowledge;
 import com.example.adapter.model.InfoRequest;
+import com.example.adapter.service.InfoRequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InfoRequestImpl implements InfoRequestService{
+public class InfoRequestImpl implements InfoRequestService {
 
     private final ClientHttp clientHttp;
 
