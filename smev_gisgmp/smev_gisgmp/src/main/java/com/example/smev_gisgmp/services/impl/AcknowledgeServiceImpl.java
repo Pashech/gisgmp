@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AcknowledgeServiceImpl implements AcknowledgeService {
 
-    private final PenaltyToResponseService penaltyToResponseRepository;
+    private final PenaltyToResponseService penaltyToResponseService;
 
     @Override
     public AcknowledgeEntity createAcknowledge(AcknowledgeEntity acknowledge) {
-        if(acknowledge.getResponseId().equals(penaltyToResponseRepository.getAllPenalties().get(0).getResponseId())){
-            penaltyToResponseRepository.deleteAllPenalties();
+        if(acknowledge.getResponseId().equals(penaltyToResponseService.getAllPenalties().get(0).getResponseId())){
+            penaltyToResponseService.deletePenaltiesByResponseId(acknowledge.getResponseId());
         }
         return acknowledge;
     }

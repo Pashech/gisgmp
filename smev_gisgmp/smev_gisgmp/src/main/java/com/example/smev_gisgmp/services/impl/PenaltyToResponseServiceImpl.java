@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.smev_gisgmp.constants.Constants.DELETE_ALL_PENALTIES_TO_RESPONSE;
 import static com.example.smev_gisgmp.constants.Constants.INSERT_PENALTY_TO_RESPONSE;
@@ -19,11 +20,7 @@ public class PenaltyToResponseServiceImpl implements PenaltyToResponseService {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Override
-    public void deleteAllPenalties() {
-        jdbcTemplate.update(DELETE_ALL_PENALTIES_TO_RESPONSE);
 
-    }
     @Override
     public int savePenaltyToResponse(PenaltyToResponse penaltyToResponse) {
         return jdbcTemplate.update(INSERT_PENALTY_TO_RESPONSE,
@@ -40,5 +37,10 @@ public class PenaltyToResponseServiceImpl implements PenaltyToResponseService {
     @Override
     public List<PenaltyToResponse> getAllPenalties() {
         return jdbcTemplate.query(SELECT_PENALTY_TO_RESPONSE, new BeanPropertyRowMapper<>(PenaltyToResponse.class));
+    }
+
+    @Override
+    public void deletePenaltiesByResponseId(UUID uuid) {
+        jdbcTemplate.update(DELETE_ALL_PENALTIES_TO_RESPONSE, uuid);
     }
 }

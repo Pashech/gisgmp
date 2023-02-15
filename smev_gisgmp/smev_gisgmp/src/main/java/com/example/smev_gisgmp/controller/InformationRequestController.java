@@ -1,6 +1,7 @@
 package com.example.smev_gisgmp.controller;
 
 import com.example.smev_gisgmp.entity.InformationRequest;
+import com.example.smev_gisgmp.services.InformationRequestService;
 import com.example.smev_gisgmp.services.impl.InformationRequestServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 @Validated
 public class InformationRequestController {
     
-    private final InformationRequestServiceImpl informationRequestService;
+    private final InformationRequestService informationRequestService;
 
     @PostMapping("/information/request/")
     public ResponseEntity<InformationRequest> createInformationRequest(@Valid @RequestBody InformationRequest informationRequest){

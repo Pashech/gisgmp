@@ -50,7 +50,7 @@ public class PenaltyServiceImpl implements PenaltyService {
                 throw new NoPenaltyException("Penalty not found");
             }
 
-            emulateServerError();
+            //emulateServerError();
 
             List<PenaltyToResponse> penaltyToResponseList = new ArrayList<>();
             for (Penalty penalty : penalties) {

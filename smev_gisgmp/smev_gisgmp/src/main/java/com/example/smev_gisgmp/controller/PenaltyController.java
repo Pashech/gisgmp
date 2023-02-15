@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,10 +39,5 @@ public class PenaltyController {
     @PostMapping("/acknowledge/")
     public ResponseEntity<AcknowledgeEntity> createAcknowledge(@RequestBody AcknowledgeEntity acknowledge) {
         return new ResponseEntity<>(acknowledgeService.createAcknowledge(acknowledge), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete")
-    public void delete() {
-        penaltyToResponseService.deleteAllPenalties();
     }
 }
