@@ -36,7 +36,7 @@ public class PenaltyServiceImpl implements PenaltyService {
 
     @Override
     public List<PenaltyToResponse> getPenalty(String vehicleCertificate) throws NoPenaltyException, ServerSvemException {
-        List<PenaltyToResponse> penaltyToResponseList1;
+
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         Future<?> future = executorService.submit(() -> {
@@ -82,32 +82,16 @@ public class PenaltyServiceImpl implements PenaltyService {
             executorService.shutdown();
         }
 
-        penaltyToResponseList1 = penaltyToResponseRepository.getAllPenalties();
-        return penaltyToResponseList1;
-    }
-
-    private void emulateServerError(){
-        int x = 0;
-        int count = 0;
-        while (x <= 0) {
-            x = (int) (Math.random() * 10 - 5);
-            log.info(String.valueOf(x));
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            count++;
-            if (count == 4) {
-                log.error("Server is unavailable");
-                throw new ServerSvemException("Server is unavailable");
-            }
-        }
+        return penaltyToResponseRepository.getAllPenalties();
     }
 
     @Override
     public List<Penalty> getPenaltiesByVehicleCertificate(String vehicleCertificate) {
         return jdbcTemplate.query(SELECT_PENALTY_QUERY, new BeanPropertyRowMapper<>(Penalty.class), vehicleCertificate);
+    }
+
+    public void worker(String vehicleCertificate){
+        System.out.println(vehicleCertificate);
     }
 
     public static PenaltyToResponse changePenaltyToPenaltyResponse(Penalty penalty) {
