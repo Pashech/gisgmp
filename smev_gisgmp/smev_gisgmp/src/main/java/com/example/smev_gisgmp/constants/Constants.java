@@ -1,9 +1,9 @@
 package com.example.smev_gisgmp.constants;
 
-
 public class Constants {
 
     public final static String SELECT_INFORMATION_QUERY = "SELECT * FROM information WHERE vehicleCertificate=?";
+    public final static String SELECT_INFORMATION_QUERY_FROM_QUEUE = "SELECT * FROM information";
     public final static String SELECT_PENALTY_QUERY = "SELECT * FROM penalties WHERE vehicleCertificate = ?";
     public final static String SELECT_PENALTY_TO_RESPONSE = "SELECT * FROM penaltyToResponse";
     public final static String SELECT_PENALTY_TO_RESPONSE_TEST = "SELECT * FROM penaltyToResponse";

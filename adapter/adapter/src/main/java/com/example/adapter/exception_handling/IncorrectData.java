@@ -10,4 +10,5 @@ import lombok.Setter;
 public class IncorrectData {
 
     private String info;
+    private int status;
 }

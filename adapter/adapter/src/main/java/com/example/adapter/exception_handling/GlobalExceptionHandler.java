@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<IncorrectData> handleException(NoPenaltyFoundException exception){
         IncorrectData incorrectData = new IncorrectData();
         incorrectData.setInfo(exception.getMessage());
+        incorrectData.setStatus(400);
         return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
     }
 
@@ -50,7 +51,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-        return new ResponseEntity<>("not valid due to validation error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+    ResponseEntity<IncorrectData> handleConstraintViolationException(ConstraintViolationException e) {
+        IncorrectData incorrectData = new IncorrectData();
+        incorrectData.setInfo("not valid due to validation error: " + e.getMessage());
+        incorrectData.setStatus(400);
+        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
     }
 }

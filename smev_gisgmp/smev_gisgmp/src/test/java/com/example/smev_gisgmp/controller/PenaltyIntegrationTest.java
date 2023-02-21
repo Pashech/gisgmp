@@ -4,6 +4,7 @@ import com.example.smev_gisgmp.entity.AcknowledgeEntity;
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
 import com.example.smev_gisgmp.services.InformationRequestService;
+import com.example.smev_gisgmp.worker.Worker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +49,8 @@ class PenaltyIntegrationTest {
     private InformationRequestService informationRequestService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private Worker worker;
 
     private final InformationRequest informationRequest = new InformationRequest();
     private final InformationRequest informationRequest2 = new InformationRequest();
@@ -101,6 +104,7 @@ class PenaltyIntegrationTest {
         insertPenalty(penalty);
         insertPenalty(penalty2);
         insertPenalty(penalty3);
+        worker.run();
 
         mockMvc.perform(get("/get/penalties/" + informationRequest.getVehicleCertificate()))
                 .andDo(print())

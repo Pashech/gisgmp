@@ -7,8 +7,7 @@ import java.util.Optional;
 public interface InformationRequestService {
 
     InformationRequest getInformationRequestByVehicleCertificate(String vehicleCertificate);
-
     InformationRequest saveInformationRequest(InformationRequest informationRequest);
-    Optional<InformationRequest> getInformationRequest(String vehicleCertificate);
+    Optional<InformationRequest> getInformationRequest();
     void deleteInformationRequest(String vehicleCertificate);
 }

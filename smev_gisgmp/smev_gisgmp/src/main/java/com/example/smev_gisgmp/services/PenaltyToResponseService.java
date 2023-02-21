@@ -8,7 +8,6 @@ import java.util.UUID;
 public interface PenaltyToResponseService {
 
     List<PenaltyToResponse> getAllPenalties();
-    //void deleteAllPenalties();
 
     void deletePenaltiesByResponseId(UUID uuid);
 

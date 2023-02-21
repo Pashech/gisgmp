@@ -20,7 +20,6 @@ public class PenaltyToResponseServiceImpl implements PenaltyToResponseService {
 
     private final JdbcTemplate jdbcTemplate;
 
-
     @Override
     public int savePenaltyToResponse(PenaltyToResponse penaltyToResponse) {
         return jdbcTemplate.update(INSERT_PENALTY_TO_RESPONSE,

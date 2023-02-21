@@ -5,7 +5,6 @@
 
     <changeSet id="insert-penalty" author="Pashech">
         <insert tableName="penalties">
-            <column name="id" type="uuid"/>
             <column name="accruedAmount" valueNumeric="37"/>
             <column name="amountPayable" valueNumeric="37"/>
             <column name="resolutionNumber" valueNumeric="215"/>
@@ -16,7 +15,6 @@
     </changeSet>
     <changeSet id="insert-penalty-2" author="Pashech">
         <insert tableName="penalties">
-            <column name="id" type="uuid"/>
             <column name="accruedAmount" valueNumeric="74"/>
             <column name="amountPayable" valueNumeric="74"/>
             <column name="resolutionNumber" valueNumeric="220"/>
@@ -27,7 +25,6 @@
     </changeSet>
     <changeSet id="insert-penalty-3" author="Pashech">
         <insert tableName="penalties">
-            <column name="id" type="uuid"/>
             <column name="accruedAmount" valueNumeric="150"/>
             <column name="amountPayable" valueNumeric="150"/>
             <column name="resolutionNumber" valueNumeric="215"/>

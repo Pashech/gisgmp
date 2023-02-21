@@ -14,6 +14,7 @@ import java.util.UUID;
 import static com.example.smev_gisgmp.constants.Constants.DELETE_INFORMATION;
 import static com.example.smev_gisgmp.constants.Constants.INSERT_INFORMATION;
 import static com.example.smev_gisgmp.constants.Constants.SELECT_INFORMATION_QUERY;
+import static com.example.smev_gisgmp.constants.Constants.SELECT_INFORMATION_QUERY_FROM_QUEUE;
 
 @Service
 @RequiredArgsConstructor
@@ -41,8 +42,8 @@ public class InformationRequestServiceImpl implements InformationRequestService 
     }
 
     @Override
-    public Optional<InformationRequest> getInformationRequest(String vehicleCertificate) {
-        return Optional.of(jdbcTemplate.query(SELECT_INFORMATION_QUERY, new BeanPropertyRowMapper<>(InformationRequest.class), new Object[]{vehicleCertificate})
+    public Optional<InformationRequest> getInformationRequest() {
+        return Optional.of(jdbcTemplate.query(SELECT_INFORMATION_QUERY_FROM_QUEUE, new BeanPropertyRowMapper<>(InformationRequest.class))
                 .stream()
                 .findAny()
                 .orElse(new InformationRequest()));

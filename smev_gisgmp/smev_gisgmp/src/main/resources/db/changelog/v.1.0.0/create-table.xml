@@ -5,7 +5,7 @@
 
     <changeSet id="create-table-penalties" author="Pashech">
         <createTable tableName="penalties">
-            <column name="id" type="UUID" autoIncrement="${autoIncrement}"/>
+            <column name="id" type="uuid" defaultValueComputed="random_uuid()"/>
             <column name="accruedAmount" type="decimal"/>
             <column name="amountPayable" type="decimal"/>
             <column name="resolutionNumber" type="int"/>
@@ -13,7 +13,5 @@
             <column name="decisionDate" type="date"/>
             <column name="articleKoAP" type="varchar"/>
         </createTable>
-
     </changeSet>
-
 </databaseChangeLog>

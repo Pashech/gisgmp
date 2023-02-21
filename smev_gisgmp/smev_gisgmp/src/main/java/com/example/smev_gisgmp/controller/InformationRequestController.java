@@ -2,7 +2,6 @@ package com.example.smev_gisgmp.controller;
 
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.services.InformationRequestService;
-import com.example.smev_gisgmp.services.impl.InformationRequestServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
