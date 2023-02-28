@@ -1,5 +1,6 @@
 package com.example.smev_gisgmp.controller;
 
+import com.example.smev_gisgmp.SmevGisgmpApplicationTests;
 import com.example.smev_gisgmp.entity.AcknowledgeEntity;
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.example.smev_gisgmp.entity.PenaltyToResponse;
@@ -10,12 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -37,11 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureMockMvc
+
 @Slf4j
-class PenaltyIntegrationTest {
+class PenaltyIntegrationTest extends SmevGisgmpApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;

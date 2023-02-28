@@ -3,6 +3,9 @@
   "amountPayable": 100,
   "resolutionNumber": 245,
   "vehicleCertificate": "ETA123456",
-  "decisionDate": "2023-11-11",
+  "decisionDate": {
+    "year": 2023,
+    "dayOfMonth" : 20
+  },
   "articleKoAP": "456p3"
 }

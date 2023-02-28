@@ -1,5 +1,6 @@
 package com.example.smev_gisgmp.controller;
 
+import com.example.smev_gisgmp.SmevGisgmpApplicationTests;
 import com.example.smev_gisgmp.entity.InformationRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureMockMvc
-class InformationRequestIntegrationTest {
+
+class InformationRequestIntegrationTest extends SmevGisgmpApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
