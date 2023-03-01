@@ -1,7 +1,9 @@
 package com.example.adapter.controller;
 
 import com.example.adapter.AdapterApplicationTests;
+import com.example.adapter.model.Acknowledge;
 import com.example.adapter.model.Penalty;
+import com.example.adapter.model.dto.PenaltyDto;
 import com.example.adapter.service.PenaltyClientService;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -16,9 +18,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 @WireMockTest(httpPort = 8081)
@@ -36,7 +42,7 @@ class PenaltyControllerTest extends AdapterApplicationTests {
         BufferedReader reader = new BufferedReader(new FileReader("D:\\Intervale\\gisgmp\\adapter\\adapter\\src\\test\\resources\\mock\\response\\" +
                 "information-request.json"));
 
-        Penalty penalty = gson.fromJson(reader, Penalty.class);
+        List<Penalty> penalty = gson.fromJson(reader, List.class);
         String gsonPenalty = gson.toJson(penalty);
         System.out.println(penalty);
 
@@ -46,13 +52,14 @@ class PenaltyControllerTest extends AdapterApplicationTests {
                         .withBody(gsonPenalty)
                         .withStatus(200)));
 
-        try{
-            penaltyClientService.getPenalty("ETA123456");
-        }catch (Exception e){
+        stubFor(WireMock.post("/acknowledge/")
+                .willReturn(aResponse()
+                        .withStatus(200)));
 
-        }
+            penaltyClientService.getPenalty("ETA123456");
 
         WireMock.verify(1, getRequestedFor(WireMock.urlEqualTo("/get/penalties/ETA123456")));
+        WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/acknowledge/")));
 
     }
 }

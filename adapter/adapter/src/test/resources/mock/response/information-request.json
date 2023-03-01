@@ -1,11 +1,18 @@
-{
-  "accruedAmount": 100,
-  "amountPayable": 100,
-  "resolutionNumber": 245,
-  "vehicleCertificate": "ETA123456",
-  "decisionDate": {
-    "year": 2023,
-    "dayOfMonth" : 20
+[
+  {
+    "accruedAmount": 100,
+    "amountPayable": 100,
+    "resolutionNumber": 245,
+    "vehicleCertificate": "ETA123456",
+    "decisionDate": "2023-01-01",
+    "articleKoAP": "456p3"
   },
-  "articleKoAP": "456p3"
-}
+  {
+    "accruedAmount": 200,
+    "amountPayable": 200,
+    "resolutionNumber": 245,
+    "vehicleCertificate": "ETA123456",
+    "decisionDate": "2023-01-10",
+    "articleKoAP": "456p3"
+  }
+]
