@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<penalties>
+    <penalty>
+        <accruedAmount>112</accruedAmount>
+        <amountPayable>122</amountPayable>
+        <resolutionNumber>123</resolutionNumber>
+        <vehicleCertificate>ETA123456</vehicleCertificate>
+        <!--    <decisionDate>2023-01-05</decisionDate>-->
+        <articleKoAP>234p3</articleKoAP>
+    </penalty>
+    <penalty>
+        <accruedAmount>112</accruedAmount>
+        <amountPayable>122</amountPayable>
+        <resolutionNumber>123</resolutionNumber>
+        <vehicleCertificate>ETA123456</vehicleCertificate>
+        <!--    <decisionDate>2023-01-05</decisionDate>-->
+        <articleKoAP>234p3</articleKoAP>
+    </penalty>
+</penalties>
+
+
+

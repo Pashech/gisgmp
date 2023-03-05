@@ -112,6 +112,18 @@ class PenaltyIntegrationTest extends SmevGisgmpApplicationTests {
 
     @Test
     @Sql(value = "classpath:reset/reset.sql", executionPhase = BEFORE_TEST_METHOD)
+    void getPenaltiesWithNotFound() throws Exception {
+        informationRequestService.saveInformationRequest(informationRequest);
+        worker.run();
+
+        mockMvc.perform(get("/get/penalties/" + informationRequest.getVehicleCertificate()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @Sql(value = "classpath:reset/reset.sql", executionPhase = BEFORE_TEST_METHOD)
     public void createAcknowledgeTest() throws Exception {
         AcknowledgeEntity acknowledge = new AcknowledgeEntity();
         acknowledge.setResponseId(informationRequest.getId());
