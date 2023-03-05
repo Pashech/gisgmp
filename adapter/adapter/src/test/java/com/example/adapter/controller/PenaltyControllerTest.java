@@ -1,32 +1,17 @@
 package com.example.adapter.controller;
 
 import com.example.adapter.AdapterApplicationTests;
-import com.example.adapter.model.Acknowledge;
-import com.example.adapter.model.Penalties;
 import com.example.adapter.model.Penalty;
-import com.example.adapter.model.dto.PenaltyDto;
 import com.example.adapter.service.PenaltyClientService;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
@@ -69,46 +54,44 @@ class PenaltyControllerTest extends AdapterApplicationTests {
 
     }
 
-//    @Test
-//    void getPenaltiesWithXmlTest() throws Exception {
-//
-//        File file = new File("src\\test\\resources\\mock\\response\\information-request.xml");
-//        JAXBContext context = JAXBContext.newInstance(Penalties.class);
-//        Unmarshaller unmarshaller = context.createUnmarshaller();
-//        Penalties penalties = (Penalties) unmarshaller.unmarshal(file);
-//        System.out.println(penalties);
-//        Marshaller marshaller = context.createMarshaller();
-//        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-//        marshaller.marshal(penalties, new File("src\\test\\resources\\mock\\response\\information-requests.xml"));
-//        File file1 = new File("src\\test\\resources\\mock\\response\\information-requests.xml");
-//
-//
-//        stubFor(WireMock.get("/get/penalties/ETA123456")
-//                .willReturn(aResponse()
-//                        .withHeader("Content-Type", "application/xml;")
-//                        .withBody(String.valueOf(file1))
-//                        .withStatus(200)));
-//
-//        stubFor(WireMock.post("/acknowledge/")
-//                .willReturn(aResponse()
-//                        .withStatus(200)));
-//
-//        penaltyClientService.getPenalty("ETA123456");
-//
-//        WireMock.verify(1, getRequestedFor(WireMock.urlEqualTo("/get/penalties/ETA123456")));
-//        WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/acknowledge/")));
-//
-//    }
-
     @Test
-    void xmlTest() throws JAXBException {
+    void getPenaltiesWithXmlTest() {
 
-        //String st = "D:\\Intervale\\gisgmp\\adapter\\adapter\\src\\test\\resources\\mock\\response\\information-request.xml";
+        String xml =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                        + "<penalties>\n"
+                        + "     <penalty>\n"
+                        + "         <accruedAmount>100</accruedAmount>\n"
+                        + "         <amountPayable>100</amountPayable>\n"
+                        + "         <resolutionNumber>123</resolutionNumber>\n"
+                        + "         <vehicleCertificate>ETA123456</vehicleCertificate>\n"
+                        + "         <decisionDate>2023-01-02</decisionDate>\n"
+                        + "         <articleKoAP>234p5</articleKoAP>\n"
+                        + "     </penalty>\n"
+                        + "     <penalty>\n"
+                        + "         <accruedAmount>200</accruedAmount>\n"
+                        + "         <amountPayable>200</amountPayable>\n"
+                        + "         <resolutionNumber>123</resolutionNumber>\n"
+                        + "         <vehicleCertificate>ETA123456</vehicleCertificate>\n"
+                        + "         <decisionDate>2023-01-02</decisionDate>\n"
+                        + "         <articleKoAP>234p5</articleKoAP>\n"
+                        + "     </penalty>\n"
+                        + "</penalties>";
 
-        File file = new File("src\\test\\resources\\mock\\response\\information-request.xml");
-        JAXBContext context = JAXBContext.newInstance(Penalties.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        Penalties penalties = (Penalties) unmarshaller.unmarshal(file);
-        System.out.println(penalties);
+        stubFor(WireMock.get("/get/penalties/ETA123456")
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/xml;")
+                        .withBody(xml)
+                        .withStatus(200)));
+
+        stubFor(WireMock.post("/acknowledge/")
+                .willReturn(aResponse()
+                        .withStatus(200)));
+
+        penaltyClientService.getPenalty("ETA123456");
+
+        WireMock.verify(1, getRequestedFor(WireMock.urlEqualTo("/get/penalties/ETA123456")));
+        WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/acknowledge/")));
+
     }
 }

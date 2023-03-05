@@ -34,6 +34,7 @@ public class InformationRequestServiceImpl implements InformationRequestService 
         InformationRequest informationRequest1 = getInformationRequestByVehicleCertificate(informationRequest.getVehicleCertificate());
         if(informationRequest1 == null){
             informationRequest.setId(UUID.randomUUID());
+            System.out.println(informationRequest.getId());
             jdbcTemplate.update(INSERT_INFORMATION,informationRequest.getId(), informationRequest.getVehicleCertificate());
         }
 

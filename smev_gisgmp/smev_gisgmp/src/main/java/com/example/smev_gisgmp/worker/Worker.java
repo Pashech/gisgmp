@@ -43,7 +43,7 @@ public class Worker {
                 Optional<InformationRequest> informationRequest = informationRequestService.getInformationRequest();
                 while (informationRequest.get().getVehicleCertificate() == null) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
