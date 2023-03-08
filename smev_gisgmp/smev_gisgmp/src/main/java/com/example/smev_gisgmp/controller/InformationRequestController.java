@@ -21,6 +21,6 @@ public class InformationRequestController {
 
     @PostMapping("/information/request/")
     public ResponseEntity<InformationRequest> createInformationRequest(@Valid @RequestBody InformationRequest informationRequest){
-        return new ResponseEntity<>(informationRequestService.saveInformationRequest(informationRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(informationRequestService.saveInformationRequest(informationRequest), HttpStatus.ACCEPTED);
     }
 }

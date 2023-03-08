@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class PenaltyClientServiceImpl implements PenaltyClientService {
     public ResponseEntity<List<PenaltyDto>> getPenalty(String vehicleCertificate) {
         ResponseEntity<List<Penalty>> penaltyList = clientHttp.getPenaltyFromSmev(vehicleCertificate);
         if(Objects.requireNonNull(penaltyList.getBody()).size() == 0){
-            throw new NoPenaltyFoundException("No any penalty");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
         List<PenaltyDto> penaltyDtoList = new ArrayList<>();
         for(int i = 0; i < Objects.requireNonNull(penaltyList.getBody()).size(); i++){

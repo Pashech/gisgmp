@@ -6,12 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,7 +38,7 @@ class InformationRequestIntegrationTest extends SmevGisgmpApplicationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.vehicleCertificate").value("ETA123456"))
                 .andExpect(jsonPath("$.id").isNotEmpty());
     }

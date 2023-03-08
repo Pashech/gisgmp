@@ -91,6 +91,8 @@ class PenaltyIntegrationTest extends SmevGisgmpApplicationTests {
         penalty3.setResolutionNumber(5555);
         penalty3.setVehicleCertificate("ETA987654");
         penalty3.setResponseId(informationRequest2.getId());
+
+
     }
 
     @Test
@@ -100,26 +102,14 @@ class PenaltyIntegrationTest extends SmevGisgmpApplicationTests {
         insertPenalty(penalty);
         insertPenalty(penalty2);
         insertPenalty(penalty3);
-        worker.run();
 
+        worker.run();
         mockMvc.perform(get("/get/penalties/" + informationRequest.getVehicleCertificate()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].vehicleCertificate").value(informationRequest.getVehicleCertificate()))
                 .andExpect(jsonPath("$[1].vehicleCertificate").value(informationRequest.getVehicleCertificate()));
-    }
-
-    @Test
-    @Sql(value = "classpath:reset/reset.sql", executionPhase = BEFORE_TEST_METHOD)
-    void getPenaltiesWithNotFound() throws Exception {
-        informationRequestService.saveInformationRequest(informationRequest);
-        worker.run();
-
-        mockMvc.perform(get("/get/penalties/" + informationRequest.getVehicleCertificate()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test

@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<IncorrectData> handleException(NoPenaltyException exception){
         IncorrectData incorrectData = new IncorrectData();
         incorrectData.setInfo(exception.getMessage());
-        incorrectData.setStatus(404);
+        incorrectData.setStatus(400);
         return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
     }
 
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<IncorrectData> handleException(InformationRequestException exception){
         IncorrectData incorrectData = new IncorrectData();
         incorrectData.setInfo(exception.getMessage());
-        incorrectData.setStatus(404);
+        incorrectData.setStatus(400);
         return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
     }
 

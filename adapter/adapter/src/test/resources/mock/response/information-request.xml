@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<penalties>
+    <penalty>
+        <accruedAmount>100</accruedAmount>
+        <amountPayable>100</amountPayable>
+        <resolutionNumber>123</resolutionNumber>
+        <vehicleCertificate>ETA123456</vehicleCertificate>
+        <articleKoAP>234p5</articleKoAP>
+    </penalty>
+    <penalty>
+        <accruedAmount>200</accruedAmount>
+        <amountPayable>200</amountPayable>
+        <resolutionNumber>123</resolutionNumber>
+        <vehicleCertificate>ETA123456</vehicleCertificate>
+        <articleKoAP>234p5</articleKoAP>
+    </penalty>
+</penalties>

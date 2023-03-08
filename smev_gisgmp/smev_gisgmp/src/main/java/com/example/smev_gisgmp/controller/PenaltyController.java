@@ -27,8 +27,7 @@ public class PenaltyController {
     private final AcknowledgeService acknowledgeService;
 
     @GetMapping("/get/penalties/{vehicleCertificate}")
-    public ResponseEntity<List<PenaltyToResponse>> getPenalties(@Valid @PathVariable("vehicleCertificate")
-                                                                @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "the certificate does not match the format, for example 'XXX111111'") String vehicleCertificate) throws InterruptedException {
+    public ResponseEntity<List<PenaltyToResponse>> getPenalties(@Valid @PathVariable("vehicleCertificate") @Pattern(regexp = "[A-Z]{3}[0-9]{6}", message = "the certificate does not match the format, for example 'XXX111111'") String vehicleCertificate) throws InterruptedException {
         return new ResponseEntity<>(penaltyService.getPenalty(vehicleCertificate), HttpStatus.OK);
     }
 
