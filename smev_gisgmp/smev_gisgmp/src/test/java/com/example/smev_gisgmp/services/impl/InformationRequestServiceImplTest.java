@@ -4,7 +4,6 @@ import com.example.smev_gisgmp.entity.InformationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -28,7 +27,6 @@ class InformationRequestServiceImplTest {
         testSubject = new InformationRequestServiceImpl(jdbcTemplate);
         informationRequest = new InformationRequest();
         informationRequest.setVehicleCertificate("ETA123456");
-
     }
 
     @Test
@@ -39,14 +37,9 @@ class InformationRequestServiceImplTest {
     }
 
     @Test
-    void saveInformationRequest() {
-    }
-
-    @Test
-    void getInformationRequest() {
-    }
-
-    @Test
     void deleteInformationRequest() {
+        testSubject.saveInformationRequest(informationRequest);testSubject.deleteInformationRequest("ETA123456");
+        InformationRequest deletedRequest = testSubject.getInformationRequestByVehicleCertificate("ETA123456");
+        assertNull(deletedRequest);
     }
 }

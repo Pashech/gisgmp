@@ -9,6 +9,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MockMvc;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -23,8 +25,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WireMockTest(httpPort = 8081)
+@AutoConfigureMockMvc
 class PenaltyControllerTest extends AdapterApplicationTests {
 
     @Autowired
@@ -32,6 +40,9 @@ class PenaltyControllerTest extends AdapterApplicationTests {
 
     @Autowired
     private PenaltyClientService penaltyClientService;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     void getPenaltiesWithJsonTest() throws Exception {
@@ -52,7 +63,12 @@ class PenaltyControllerTest extends AdapterApplicationTests {
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-            penaltyClientService.getPenalty("ETA123456");
+        mockMvc.perform(get("/getPenalties/" + "ETA123456"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].vehicleCertificate").value("ETA123456"))
+                .andExpect(jsonPath("$[1].vehicleCertificate").value("ETA123456"));
 
         WireMock.verify(1, getRequestedFor(WireMock.urlEqualTo("/get/penalties/ETA123456")));
         WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/acknowledge/")));
@@ -81,7 +97,12 @@ class PenaltyControllerTest extends AdapterApplicationTests {
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        penaltyClientService.getPenalty("ETA123456");
+        mockMvc.perform(get("/getPenalties/" + "ETA123456"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].vehicleCertificate").value("ETA123456"))
+                .andExpect(jsonPath("$[1].vehicleCertificate").value("ETA123456"));
 
         WireMock.verify(1, getRequestedFor(WireMock.urlEqualTo("/get/penalties/ETA123456")));
         WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/acknowledge/")));

@@ -9,6 +9,9 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -20,8 +23,15 @@ import java.io.StringWriter;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WireMockTest(httpPort = 8081)
+@AutoConfigureMockMvc
 class InformationControllerTest extends AdapterApplicationTests {
 
     @Autowired
@@ -30,12 +40,15 @@ class InformationControllerTest extends AdapterApplicationTests {
     @Autowired
     private InfoRequestService infoRequestService;
 
+    @Autowired
+    private MockMvc mockMvc;
+
     @Test
-    void sendInfoRequest() {
+    void sendInfoRequest() throws Exception {
 
         InfoRequest infoRequest = new InfoRequest();
-        String gson1 = gson.toJson(infoRequest);
         infoRequest.setVehicleCertificate("ETA123456");
+        String gson1 = gson.toJson(infoRequest);
 
         stubFor(WireMock.post("/information/request/")
                 .willReturn(aResponse()
@@ -43,7 +56,12 @@ class InformationControllerTest extends AdapterApplicationTests {
                         .withBody(gson1)
                         .withStatus(202)));
 
-        infoRequestService.sendInfoRequest(infoRequest);
+        mockMvc.perform(post("/info/request/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson1))
+                .andDo(print())
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.vehicleCertificate").value("ETA123456"));
 
         WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/information/request/")));
     }

@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @Slf4j
 class PenaltyIntegrationTest extends SmevGisgmpApplicationTests {
 
@@ -91,8 +90,6 @@ class PenaltyIntegrationTest extends SmevGisgmpApplicationTests {
         penalty3.setResolutionNumber(5555);
         penalty3.setVehicleCertificate("ETA987654");
         penalty3.setResponseId(informationRequest2.getId());
-
-
     }
 
     @Test

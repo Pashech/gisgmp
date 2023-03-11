@@ -6,6 +6,7 @@ import com.example.smev_gisgmp.entity.PenaltyToResponse;
 import com.example.smev_gisgmp.exception_handling.NoPenaltyException;
 import com.example.smev_gisgmp.exception_handling.thread.HandlerThreadFactory;
 import com.example.smev_gisgmp.services.InformationRequestService;
+import com.example.smev_gisgmp.services.PenaltyService;
 import com.example.smev_gisgmp.services.PenaltyToResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class Worker {
 
     private final InformationRequestService informationRequestService;
     private final PenaltyToResponseService penaltyToResponseRepository;
+    private final PenaltyService penaltyService;
     private final JdbcTemplate jdbcTemplate;
     private ExecutorService executorService;
 
@@ -51,7 +53,7 @@ public class Worker {
                     log.info(informationRequest.get().getVehicleCertificate() + "from worker repeating");
                 }
 
-                List<Penalty> penalties = getPenaltiesByVehicleCertificate(informationRequest.get().getVehicleCertificate());
+                List<Penalty> penalties = penaltyService.getPenaltiesByVehicleCertificate(informationRequest.get().getVehicleCertificate());
                 if (penalties.size() == 0) {
                     throw new NoPenaltyException("Penalty not found");
                 }

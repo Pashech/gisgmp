@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.UUID;
 
 @Getter
