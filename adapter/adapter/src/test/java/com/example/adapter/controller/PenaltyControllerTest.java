@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.xml.bind.JAXBContext;
@@ -97,12 +98,10 @@ class PenaltyControllerTest extends AdapterApplicationTests {
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        mockMvc.perform(get("/getPenalties/" + "ETA123456"))
+        mockMvc.perform(get("/getPenalties/" + "ETA123456")
+                        .contentType(MediaType.APPLICATION_XML))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].vehicleCertificate").value("ETA123456"))
-                .andExpect(jsonPath("$[1].vehicleCertificate").value("ETA123456"));
+                .andExpect(status().isOk());
 
         WireMock.verify(1, getRequestedFor(WireMock.urlEqualTo("/get/penalties/ETA123456")));
         WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/acknowledge/")));

@@ -67,7 +67,7 @@ class InformationControllerTest extends AdapterApplicationTests {
     }
 
     @Test
-    void sendInfoRequestWithXml() throws JAXBException {
+    void sendInfoRequestWithXml() throws Exception {
 
         JAXBContext jaxbContext = JAXBContext.newInstance(InfoRequest.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -83,9 +83,13 @@ class InformationControllerTest extends AdapterApplicationTests {
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/xml;")
                         .withBody(xml)
-                        .withStatus(200)));
+                        .withStatus(202)));
 
-        infoRequestService.sendInfoRequest(infoRequest);
+        mockMvc.perform(post("/info/request/")
+                        .contentType(MediaType.APPLICATION_XML)
+                        .content(xml))
+                .andDo(print())
+                .andExpect(status().isAccepted());
 
         WireMock.verify(1, postRequestedFor(WireMock.urlEqualTo("/information/request/")));
     }
